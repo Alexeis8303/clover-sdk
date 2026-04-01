@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { Clover } from "./Clover";
 import { LineItem } from "./types/lineitem";
 import { AtomicOrderCreateInput } from "./types/order";
@@ -26,10 +27,10 @@ export const pickRandomItems = <T>(arr: T[], n: number): T[] => {
 
 
 const clover = new Clover({
-  merchantId: "****",
-  accessToken: "****",
-  environment: "sandbox",
-  hostedCheckoutPrivateKey: "****"
+  merchantId: process.env.MERCHANT_ID as string,
+  accessToken: process.env.ACCESS_TOKEN as string,
+  environment: process.env.ENVIRONMENT === "production" ? "production" : "sandbox",
+  hostedCheckoutPrivateKey: process.env.HOSTED_CHECKOUT_PRIVATE_KEY as string
 });
 
 /*const categories = await clover.categories.list(0, 1, ["items"]);
