@@ -1,10 +1,10 @@
-import { ApiResource } from "../core/ApiResource"
+import { ApiResource } from "../core/ApiResource.js"
 import {
     InventoryItem,
     InventoryItemSchema,
     InventoryItemListResponseSchema
-} from "../types/inventory"
-import { autoPaginate } from "../utils/autoPagination"
+} from "../types/inventory.js"
+import { autoPaginate } from "../utils/autoPagination.js"
 
 export class ItemsResource extends ApiResource {
 

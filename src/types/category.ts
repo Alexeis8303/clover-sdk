@@ -6,7 +6,7 @@ import {
   IdRefOptionalSchema, 
   IdRefArrayItemSchema, 
   ExpandedResponseSchema
-} from "./base";
+} from "./base.js";
 
 // ============================================================================
 // SCHEMA PRINCIPAL: Category

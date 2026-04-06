@@ -7,12 +7,12 @@ import {
   AmountSchema,
   ExpandedResponseSchema,
   AddressSchema as CustomerAddressSchema
-} from "./base";
+} from "./base.js";
 import {
   // Enums
   RoleEnum,
-} from "./enums";
-import { EmployeeSchema } from "./employee";
+} from "./enums.js";
+import { EmployeeSchema } from "./employee.js";
 
 // ============================================================================
 // MERCHANT REFERENCE SCHEMA (Para referencias simples)

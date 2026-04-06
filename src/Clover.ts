@@ -1,11 +1,11 @@
-import { RequestSender } from "./core/RequestSender"
-import { OrdersResource } from "./resources/OrdersResource"
-import { CategoriesResource } from "./resources/CategoriesResource"
-import { ItemsResource } from "./resources/ItemsResource"
-import { ModifierGroupsResource } from "./resources/ModifierGroupsResource"
-import { ModifiersResource } from "./resources/ModifiersResource"
-import { MerchantsResource } from "./resources/MerchantResource"
-import { HostedCheckoutResource } from "./resources/HostedCheckoutResource"
+import { RequestSender } from "./core/RequestSender.js"
+import { OrdersResource } from "./resources/OrdersResource.js"
+import { CategoriesResource } from "./resources/CategoriesResource.js"
+import { ItemsResource } from "./resources/ItemsResource.js"
+import { ModifierGroupsResource } from "./resources/ModifierGroupsResource.js"
+import { ModifiersResource } from "./resources/ModifiersResource.js"
+import { MerchantsResource } from "./resources/MerchantResource.js"
+import { HostedCheckoutResource } from "./resources/HostedCheckoutResource.js"
 
 export interface CloverOptions {
   merchantId: string

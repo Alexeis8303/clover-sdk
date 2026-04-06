@@ -4,7 +4,7 @@ import {
   AddressSchema,
   AmountSchema,
   PercentageDecimalSchema
-} from "./base";
+} from "./base.js";
 
 // ============================================================================
 // CUSTOMER SCHEMAS (Para Hosted Checkout)

@@ -1,6 +1,6 @@
-import { sleep } from "../utils/sleep"
-import { shouldRetry } from "../utils/shouldRetry"
-import { getRetryDelay } from "../utils/getRetryDelay"
+import { sleep } from "../utils/sleep.js"
+import { shouldRetry } from "../utils/shouldRetry.js"
+import { getRetryDelay } from "../utils/getRetryDelay.js"
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 
 

@@ -8,7 +8,7 @@ import {
   GenericAttributesSchema,
   PercentageDecimalSchema,
   LocaleSchema
-} from "./base";
+} from "./base.js";
 import {
   CardTypeEnum,
   CardEntryTypeEnum,
@@ -31,9 +31,9 @@ import {
   SelectedServiceEnum,
   TransactionResultEnum,
   ReversalReasonEnum
-} from "./enums";
-import { CustomerSchema, VaultedCardSchema } from "./customer";
-import { RefundSchema } from "./refund";
+} from "./enums.js";
+import { CustomerSchema, VaultedCardSchema } from "./customer.js";
+import { RefundSchema } from "./refund.js";
 
 // ============================================================================
 // CARD TRANSACTION COMPONENTS

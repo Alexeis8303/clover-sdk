@@ -7,7 +7,7 @@ import {
   GenericAttributesSchema,
   GenericExtraSchema,
   Attributes
-} from "./base";
+} from "./base.js";
 import {
   // Enums
   AgeRestrictedTypeEnum,
@@ -22,10 +22,10 @@ import {
   PrintMessageDestinationEnum,
   RefundStatusEnum, RefundStatus
 
-} from "./enums";
+} from "./enums.js";
 
-import type { LineItem } from "./lineitem";
-import {  LineItemSchema } from "./lineitem";
+import type { LineItem } from "./lineitem.js";
+import {  LineItemSchema } from "./lineitem.js";
 
 export const OverrideMerchantTenderSchema = z.looseObject({
   id: z.string(),

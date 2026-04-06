@@ -8,11 +8,11 @@ import {
   Href,
   HrefSchema,
   ExpandedResponseSchema,
-} from "./base";
+} from "./base.js";
 import {
   // Enums
   RoleEnum,
-} from "./enums";
+} from "./enums.js";
 
 // ============================================================================
 // EMPLOYEE MAIN SCHEMA

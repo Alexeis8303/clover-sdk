@@ -1,15 +1,15 @@
 import { z } from "zod";
-import { IdRefSchema, TimestampSchema, GenericAttributesSchema, PercentageDecimalSchema, AmountSchema, ExpandedResponseSchema, MoneySchema } from "./base";
-import { CustomerSchema } from "./customer";
-import { OrderTypeSchema, LineItemPaymentSchema } from "./order-type";
-import { PaymentResultEnum, CardTypeEnum, PaymentStateEnum, OrderStateEnum, PayTypeEnum, AdditionalChargeTypeEnum, AuthTypeEnum, VoidReasonCodeEnum, VoidReasonEnum } from "./enums";
-import { RefundSchema, AppTrackingSchema } from "./refund";
-import { LineItemSchema } from "./lineitem";
+import { IdRefSchema, TimestampSchema, GenericAttributesSchema, PercentageDecimalSchema, AmountSchema, ExpandedResponseSchema, MoneySchema } from "./base.js";
+import { CustomerSchema } from "./customer.js";
+import { OrderTypeSchema, LineItemPaymentSchema } from "./order-type.js";
+import { PaymentResultEnum, CardTypeEnum, PaymentStateEnum, OrderStateEnum, PayTypeEnum, AdditionalChargeTypeEnum, AuthTypeEnum, VoidReasonCodeEnum, VoidReasonEnum } from "./enums.js";
+import { RefundSchema, AppTrackingSchema } from "./refund.js";
+import { LineItemSchema } from "./lineitem.js";
 import {
   PaymentSchema, TenderSchema, PaymentTaxRateSchema, CashAdvanceExtraSchema, SignatureDisclaimerSchema, IncrementSchema,
   PurchaseCardL2Schema, PurchaseCardL3Schema, OceanGatewayInfoSchema, TerminalManagementComponentSchema, EmiInfoSchema, ClosingPaymentSchema,
   EmiDetailsSchema
-} from "./payment";
+} from "./payment.js";
 
 
 // ============================================================================

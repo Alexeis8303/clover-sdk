@@ -1,7 +1,7 @@
 import { ca } from "zod/v4/locales";
-import { LineItem, LineItemDiscount, Modification, TaxRate } from "../types/lineitem";
-import type { Discount, Order, OrderAdditionalCharge } from "../types/order";
-import type { HostedCheckoutCreateInput, CartLineItem, CartTaxRate } from "../types/shoppingCart";
+import { LineItem, LineItemDiscount, Modification, TaxRate } from "../types/lineitem.js";
+import type { Discount, Order, OrderAdditionalCharge } from "../types/order.js";
+import type { HostedCheckoutCreateInput, CartLineItem, CartTaxRate } from "../types/shoppingCart.js";
 
 function calculatePercentageRate(rawRate: number): number {
     // Heurística para interpretar el formato de la tasa.

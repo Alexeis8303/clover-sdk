@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { IdRefSchema, MoneySchema, AmountSchema } from "./base";
-import { HoursAvailableEnum, CustomerIdMethodEnum} from "./enums";
+import { IdRefSchema, MoneySchema, AmountSchema } from "./base.js";
+import { HoursAvailableEnum, CustomerIdMethodEnum} from "./enums.js";
 
 export const HoursDaySchema = z.looseObject({
   start: z.number().int(),

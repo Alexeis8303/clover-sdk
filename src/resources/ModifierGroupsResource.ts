@@ -1,12 +1,12 @@
-import { ApiResource } from "../core/ApiResource"
+import { ApiResource } from "../core/ApiResource.js"
 import {
     ModifierGroup,
     ModifierGroupSchema,
     ModifierGroupListResponseSchema,
     ModifierGroupCreateInput,
     ModifierGroupUpdateInput
-} from "../types/modifierGroup"
-import { autoPaginate } from "../utils/autoPagination"
+} from "../types/modifierGroup.js"
+import { autoPaginate } from "../utils/autoPagination.js"
 
 export class ModifierGroupsResource extends ApiResource {
 

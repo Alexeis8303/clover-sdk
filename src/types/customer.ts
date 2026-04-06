@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { AddressSchema, EmailAddressSchema, IdRefSchema, PhoneNumberSchema, TimestampSchema } from "./base";
-import { CardTypeEnum } from "./enums";
+import { AddressSchema, EmailAddressSchema, IdRefSchema, PhoneNumberSchema, TimestampSchema } from "./base.js";
+import { CardTypeEnum } from "./enums.js";
 
 
 // ============================================================================

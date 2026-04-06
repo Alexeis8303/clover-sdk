@@ -1,4 +1,4 @@
-import { RequestSender } from "./RequestSender"
+import { RequestSender } from "./RequestSender.js"
 
 export class ApiResource {
 

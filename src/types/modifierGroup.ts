@@ -3,10 +3,10 @@ import { z } from "zod";
 import { 
   ExpandedResponseSchema,
   IdRefArrayItemSchema 
-} from "./base";
+} from "./base.js";
 import { 
   ModifierSchema 
-} from "./modifier";
+} from "./modifier.js";
 
 // ============================================================================
 // SCHEMA PRINCIPAL: ModifierGroup

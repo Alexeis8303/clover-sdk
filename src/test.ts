@@ -1,9 +1,9 @@
 import 'dotenv/config';
-import { Clover } from "./Clover";
-import { LineItem } from "./types/lineitem";
-import { AtomicOrderCreateInput } from "./types/order";
-import { HostedCheckoutCreateInput } from "./types/shoppingCart";
-import orderToHostedCheckout from "./utils/orderToHostedCheckout";
+import { Clover } from "./Clover.js";
+import { LineItem } from "./types/lineitem.js";
+import { AtomicOrderCreateInput } from "./types/order.js";
+import { HostedCheckoutCreateInput } from "./types/shoppingCart.js";
+import orderToHostedCheckout from "./utils/orderToHostedCheckout.js";
 
 export const pickRandomItems = <T>(arr: T[], n: number): T[] => {
   // Return the entire array if n is greater than or equal to the array length

@@ -5,7 +5,7 @@ import {
   PriceTypeEnum,
   type TaxType,
   type PriceType 
-} from "./enums";
+} from "./enums.js";
 import { 
   HexColorSchema, 
   TimestampSchema, 
@@ -14,10 +14,10 @@ import {
   IdRefOptionalSchema,
   IdRefArrayItemSchema,
   ExpandedResponseSchema
-} from "./base";
+} from "./base.js";
 
-import {CategorySchema} from "./category"
-import { ModifierGroupSchema } from "./modifierGroup";
+import {CategorySchema} from "./category.js"
+import { ModifierGroupSchema } from "./modifierGroup.js";
 
 // ============================================================================
 // SCHEMAS DE OBJETOS ANIDADOS (ESPECÍFICOS DE INVENTORY)

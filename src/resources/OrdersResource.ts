@@ -1,8 +1,7 @@
-import { ApiResource } from "../core/ApiResource"
-import { LineItem, LineItemListResponseSchema, LineItemSchema } from "../types/lineitem"
-import { AtomicOrderCreateInput, Order, OrderListResponseSchema, OrderSchema } from "../types/order"
-import { OrderType, OrderTypeListResponseSchema, OrderTypeSchema } from "../types/order-type"
-import { autoPaginate } from "../utils/autoPagination"
+import { ApiResource } from "../core/ApiResource.js"
+import { LineItem, LineItemListResponseSchema, LineItemSchema } from "../types/lineitem.js"
+import { AtomicOrderCreateInput, Order, OrderListResponseSchema, OrderSchema } from "../types/order.js"
+import { autoPaginate } from "../utils/autoPagination.js"
 
 export class OrdersResource extends ApiResource {
 

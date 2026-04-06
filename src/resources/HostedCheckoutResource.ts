@@ -1,11 +1,10 @@
-import { z } from "zod";
-import { ApiResource } from "../core/ApiResource"
+import { ApiResource } from "../core/ApiResource.js"
 import {
   HostedCheckoutCreateInputSchema,
   HostedCheckoutResponseSchema,
   type HostedCheckoutCreateInput,
   type HostedCheckoutResponse,
-} from "../types/shoppingCart" 
+} from "../types/shoppingCart.js" 
 
 
 export class HostedCheckoutResource extends ApiResource {

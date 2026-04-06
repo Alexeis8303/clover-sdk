@@ -1,10 +1,10 @@
-import { ApiResource } from "../core/ApiResource"
-import { Employee, EmployeeListResponseSchema, EmployeeSchema } from "../types/employee"
-import { Merchant, MerchantSchema } from "../types/merchant"
-import { OrderType, OrderTypeListResponseSchema, OrderTypeSchema } from "../types/order-type"
-import { Role, RoleListResponseSchema, RoleSchema } from "../types/roles"
+import { ApiResource } from "../core/ApiResource.js"
+import { Employee, EmployeeListResponseSchema, EmployeeSchema } from "../types/employee.js"
+import { Merchant, MerchantSchema } from "../types/merchant.js"
+import { OrderType, OrderTypeListResponseSchema, OrderTypeSchema } from "../types/order-type.js"
+import { Role, RoleListResponseSchema, RoleSchema } from "../types/roles.js"
 
-import { autoPaginate } from "../utils/autoPagination"
+import { autoPaginate } from "../utils/autoPagination.js"
 
 export class MerchantsResource extends ApiResource {
 

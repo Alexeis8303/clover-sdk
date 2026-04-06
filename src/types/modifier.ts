@@ -2,7 +2,7 @@
 import { z } from "zod";
 import { 
   IdRefOptionalSchema 
-} from "./base";
+} from "./base.js";
 
 // ============================================================================
 // SCHEMA PRINCIPAL: Modifier

@@ -1,11 +1,11 @@
-import { ApiResource } from "../core/ApiResource"
+import { ApiResource } from "../core/ApiResource.js"
 import {
     Category,
     CategorySchema,
     CategoryListResponseSchema
-} from "../types/category"
+} from "../types/category.js"
 
-import { autoPaginate } from "../utils/autoPagination"
+import { autoPaginate } from "../utils/autoPagination.js"
 
 export class CategoriesResource extends ApiResource {
 

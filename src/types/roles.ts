@@ -1,8 +1,8 @@
 // roles.ts
 import { z } from "zod";
-import { RoleEnum } from "./enums";
-import { IdRefSchema, IdRefArrayItemSchema, ExpandedResponseSchema, IdRefOptionalSchema } from "./base";
-import { EmployeeSchema } from "./employee";
+import { RoleEnum } from "./enums.js";
+import { IdRefSchema, IdRefArrayItemSchema, ExpandedResponseSchema, IdRefOptionalSchema } from "./base.js";
+import { EmployeeSchema } from "./employee.js";
 
 // ============================================================================
 // ROLE SCHEMA

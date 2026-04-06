@@ -8,7 +8,7 @@ import {
   HexColorSchema,
   IdRef,
   ExpandedResponseSchema
-} from "./base";
+} from "./base.js";
 import {
   // Enums
   AgeRestrictedTypeEnum,
@@ -16,13 +16,13 @@ import {
   AgeRestrictedType,
   PriceTypeEnum
 
-} from "./enums";
+} from "./enums.js";
 
-import {LineItemPaymentSchema} from "./order-type"
+import {LineItemPaymentSchema} from "./order-type.js"
 
-import type { Refund } from "./refund";
-import { RefundSchema } from "./refund";
-import { ModifierSchema } from "./modifier";
+import type { Refund } from "./refund.js";
+import { RefundSchema } from "./refund.js";
+import { ModifierSchema } from "./modifier.js";
 
 // ============================================================================
 // ITEM & MODIFIER SCHEMAS (Específicos de LineItem)
