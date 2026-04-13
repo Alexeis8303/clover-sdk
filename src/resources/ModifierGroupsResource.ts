@@ -49,7 +49,7 @@ export class ModifierGroupsResource extends ApiResource {
             async (offset, limit) => {
 
                 const data = await this.get(
-                    `/modifier_groups?offset=${offset}&limit=${limit}${expand.length > 0 ? `&expand=${expand.join(",")}` : ""}  `
+                    `/modifier_groups?offset=${offset}&limit=${limit}${expand.length > 0 ? `&expand=${expand.join(",")}` : ""}`
                 )
 
                 const parsed = ModifierGroupListResponseSchema.parse(data)

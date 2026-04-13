@@ -31,7 +31,7 @@ import { ModifierSchema } from "./modifier.js";
 export const ItemSchema = z.looseObject({
   id: z.string(),
   colorCode: HexColorSchema.optional(),
-  name: z.string().optional,
+  name: z.string().optional(),
   alternateName: z.string().optional(),
   price: AmountSchema.optional(),
   priceType: PriceTypeEnum.optional(),

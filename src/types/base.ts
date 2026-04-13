@@ -30,7 +30,7 @@ export const MoneySchema = z.number().int().nonnegative().nullable().optional()
     return Number((cents / 100).toFixed(2));
   });// cents
 export const AmountSchema = z.number().int().optional();
-export const PercentageDecimalSchema = z.number().int().describe("Percent times 10000, e.g., 12.5% = 125000");
+export const PercentageDecimalSchema = z.number().int().describe("Percent times 100000, e.g., 12.5% = 1250000");
 export const LocaleSchema = z.string().regex(/^[a-z]{2}(-[A-Z]{2})?$/).optional();
 export const GenericAttributesSchema = z.record(z.string(), z.unknown()).optional();
 export const GenericExtraSchema = z.record(z.string(), z.unknown()).optional();
