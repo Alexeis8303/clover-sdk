@@ -28,7 +28,7 @@ export const OptionSchema = z.looseObject({
   id: z.string().optional(),
   name: z.string(), // required
   attribute: IdRefOptionalSchema.optional(),
-  items: z.array(IdRefArrayItemSchema).optional()
+  items: ExpandedResponseSchema(IdRefArrayItemSchema).optional()
 });
 
 
@@ -39,7 +39,7 @@ export const TaxRateSchema = z.looseObject({
   taxType: TaxTypeEnum.optional(),
   rate: PercentageDecimalSchema.optional(),
   isDefault: z.boolean().optional(),
-  items: z.array(IdRefArrayItemSchema).optional(),
+  items: ExpandedResponseSchema(IdRefArrayItemSchema).optional(),
   taxAmount: MoneySchema,
   deletedTime: TimestampSchema,
   modifiedTime: TimestampSchema
