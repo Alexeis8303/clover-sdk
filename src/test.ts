@@ -97,8 +97,14 @@ console.log(JSON.stringify(items, null, 2));*/
   console.log(JSON.stringify(item, null, 2));   
 }*/
 
+/*const payment = await clover.orders.retrievePayments("JP945SBJSGQET", ["order", "tender", "refunds"]);
+console.log(JSON.stringify(payment, null, 2));*/
 
-const items = await clover.items.list(0, 100, ["modifierGroups", "categories"]);
+const payment = await clover.payments.retrieve("R1VPXGSJVRBX0", ["order", "order.customers", "tender", "refunds"]);
+console.log(JSON.stringify(payment, null, 2));
+
+
+/*const items = await clover.items.list(0, 100, ["modifierGroups", "categories"]);
 const selectedItems = pickRandomItems(items.elements, 3);
 const orderInput: AtomicOrderCreateInput = {
   orderCart: {
@@ -149,4 +155,4 @@ checkoutInput.customer ={
 console.log("-------------------Checkout Input:-------------------");
 console.log(JSON.stringify(checkoutInput, null, 2));
 const link = await clover.hostedCheckout.create(checkoutInput);
-console.log(JSON.stringify(link, null, 2));
+console.log(JSON.stringify(link, null, 2));*/

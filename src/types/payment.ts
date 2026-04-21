@@ -6,7 +6,11 @@ import {
   TimestampSchema,
   GenericExtraSchema,
   GenericAttributesSchema,
-  LocaleSchema
+  LocaleSchema,
+  ExpandedResponseSchema,
+  IdRef,
+  Amount,
+  Timestamp
 } from "./base.js";
 import {
   CardTypeEnum,
@@ -29,10 +33,14 @@ import {
   AdditionalChargeTypeEnum,
   SelectedServiceEnum,
   TransactionResultEnum,
-  ReversalReasonEnum
+  ReversalReasonEnum,
+  PaymentResult,
+  VoidReason
 } from "./enums.js";
 import { VaultedCardSchema } from "./customer.js";
 import { RefundSchema } from "./refund.js";
+import { OrderSchema } from "./order.js";
+import type { Order } from "./order.js";
 
 // ============================================================================
 // DEBIT REFUND
@@ -510,13 +518,58 @@ export const TenderSchema = z.looseObject({
 // PAYMENT MAIN SCHEMA
 // ============================================================================
 
+export type Payment = {
+  id?: string;
+  order?: Order;
+  device?: IdRef;
+  employee?: IdRef;
+  merchant?: IdRef;
+  tender?: Tender;
+  amount?: Amount;
+  tipAmount?: Amount;
+  taxAmount?: Amount;
+  cashbackAmount?: Amount;
+  cashTendered?: Amount;
+  externalPaymentId?: string;
+  externalReferenceId?: string;
+  createdTime?: Timestamp;
+  clientCreatedTime?: Timestamp;
+  gatewayProcessingTime?: Timestamp;
+  modifiedTime?: Timestamp;
+  offline?: boolean;
+  result?: PaymentResult;
+  cardTransaction?: CardTransaction;
+  serviceCharge?: PaymentServiceCharge;
+  additionalCharges?: PaymentAdditionalCharge[];
+  taxRates?: PaymentTaxRate[];
+  refunds?: unknown;
+  note?: string;
+  lineItemPayments?: LineItemPayment[];
+  authorization?: IdRef;
+  voidPaymentRef?: IdRef;
+  voidReason?: VoidReason;
+  voidReasonDetails?: VoidReasonDetails;
+  dccInfo?: DccInfo;
+  transactionSettings?: TransactionSettings;
+  germanInfo?: GermanInfo;
+  oceanGatewayInfo?: OceanGatewayInfo;
+  appTracking?: AppTracking;
+  cashAdvanceExtra?: CashAdvanceExtra;
+  transactionInfo?: TransactionInfo;
+  signatureDisclaimer?: SignatureDisclaimer;
+  increments?: Increment[];
+  purchaseCardL2?: PurchaseCardL2;
+  purchaseCardL3?: PurchaseCardL3;
+  terminalManagementComponents?: TerminalManagementComponent[];
+  emiInfo?: EmiInfo;
+};
 
-export const PaymentSchema = z.looseObject({
+export const PaymentSchema: z.ZodType<Payment> = z.looseObject({
   // === Identificación ===
   id: z.string().optional(),
 
   // === Referencias ===
-  order: IdRefSchema.optional(),
+  order: z.lazy(() => OrderSchema).optional(),
   device: IdRefSchema.optional(),
   employee: IdRefSchema.optional(),
   merchant: IdRefSchema.optional(),
@@ -556,7 +609,7 @@ export const PaymentSchema = z.looseObject({
   taxRates: z.array(PaymentTaxRateSchema).optional(),
 
   // === Reembolsos ===
-  refunds: z.array(RefundSchema).optional(),
+  refunds: ExpandedResponseSchema(RefundSchema).optional(),
 
   // === Nota ===
   note: z.string().optional(),
@@ -607,6 +660,19 @@ export const PaymentSchema = z.looseObject({
 });
 
 // ============================================================================
+// WRAPPERS PARA RESPUESTAS DE API
+// ============================================================================
+
+// Respuesta de GET /payments/{id}
+export const PaymentResponseSchema = PaymentSchema;
+
+// Respuesta de lista (GET /payments)
+export const PaymentListResponseSchema = z.object({
+  elements: z.array(PaymentSchema).optional(),
+  href: z.string().optional()
+});
+
+// ============================================================================
 // TYPE EXPORTS
 // ============================================================================
 
@@ -643,4 +709,3 @@ export type PaymentServiceCharge = z.infer<typeof PaymentServiceChargeSchema>;
 export type PaymentAdditionalCharge = z.infer<typeof PaymentAdditionalChargeSchema>;
 export type PaymentTaxRate = z.infer<typeof PaymentTaxRateSchema>;
 export type Tender = z.infer<typeof TenderSchema>;
-export type Payment = z.infer<typeof PaymentSchema>;

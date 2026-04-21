@@ -1,6 +1,7 @@
 import { ApiResource } from "../core/ApiResource.js"
 import { LineItem, LineItemListResponseSchema, LineItemSchema } from "../types/lineitem.js"
 import { AtomicOrderCreateInput, Order, OrderListResponseSchema, OrderSchema } from "../types/order.js"
+import { Payment, PaymentSchema, PaymentListResponseSchema } from "../types/payment.js"
 import { autoPaginate } from "../utils/autoPagination.js"
 
 export class OrdersResource extends ApiResource {
@@ -66,6 +67,18 @@ export class OrdersResource extends ApiResource {
     }
 
     return results
+  }
+  // ============================================================
+  // Payments
+  // ============================================================
+  async retrievePayments(orderId: string, expand: string[] = []): Promise<{ elements: Payment[] }> {
+    const data = await this.get(`/orders/${orderId}/payments${expand.length > 0 ? `?expand=${expand.join(",")}` : ""}`)
+
+    const parsed = PaymentListResponseSchema.parse(data);
+
+    return {
+      elements: parsed.elements ?? []
+    };
   }
 
   // ============================================================

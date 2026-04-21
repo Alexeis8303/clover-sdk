@@ -1,15 +1,20 @@
 import { z } from "zod";
-import { IdRefSchema, TimestampSchema, GenericAttributesSchema, PercentageDecimalSchema, AmountSchema, ExpandedResponseSchema, MoneySchema } from "./base.js";
+import { IdRefSchema, TimestampSchema, GenericAttributesSchema, PercentageDecimalSchema, AmountSchema, ExpandedResponseSchema, MoneySchema, IdRef, Timestamp, Money } from "./base.js";
 import { CustomerSchema } from "./customer.js";
+import type { Customer } from "./customer.js";
 import { OrderTypeSchema, LineItemPaymentSchema } from "./order-type.js";
-import { PaymentResultEnum, CardTypeEnum, PaymentStateEnum, OrderStateEnum, PayTypeEnum, AdditionalChargeTypeEnum, AuthTypeEnum, VoidReasonCodeEnum, VoidReasonEnum } from "./enums.js";
+import type { OrderType } from "./order-type.js";
+import { PaymentResultEnum, CardTypeEnum, PaymentStateEnum, OrderStateEnum, PayTypeEnum, AdditionalChargeTypeEnum, AuthTypeEnum, VoidReasonCodeEnum, VoidReasonEnum, PaymentState, OrderState, PayType } from "./enums.js";
 import { RefundSchema, AppTrackingSchema } from "./refund.js";
+import type { Refund } from "./refund.js";
 import { LineItemSchema } from "./lineitem.js";
+import type { LineItem } from "./lineitem.js";
 import {
   PaymentSchema, TenderSchema, PaymentTaxRateSchema, CashAdvanceExtraSchema, SignatureDisclaimerSchema, IncrementSchema,
   PurchaseCardL2Schema, PurchaseCardL3Schema, OceanGatewayInfoSchema, TerminalManagementComponentSchema, EmiInfoSchema, ClosingPaymentSchema,
   EmiDetailsSchema
 } from "./payment.js";
+import type { Payment } from "./payment.js";
 
 
 // ============================================================================
@@ -256,7 +261,47 @@ export const OrderAdditionalChargeSchema = z.looseObject({
 // ORDER MAIN SCHEMA
 // ============================================================================
 
-export const OrderSchema = z.looseObject({
+export type Order = {
+  id?: string;
+  currency?: string;
+  customers?: Customer[];
+  employee?: IdRef;
+  total?: Money;
+  unpaidBalance?: Money;
+  externalReferenceId?: string;
+  paymentState?: PaymentState;
+  title?: string;
+  note?: string;
+  orderType?: OrderType;
+  taxRemoved?: boolean;
+  isVat?: boolean;
+  state?: OrderState;
+  manualTransaction?: boolean;
+  groupLineItems?: boolean;
+  testMode?: boolean;
+  payType?: PayType;
+  createdTime?: Timestamp;
+  clientCreatedTime?: Timestamp;
+  modifiedTime?: Timestamp;
+  deletedTimestamp?: Timestamp;
+  serviceCharge?: ServiceCharge;
+  additionalCharges?: OrderAdditionalCharge[];
+  discounts?: Discount[];
+  lineItems?: LineItem[];
+  payments?: Payment[];
+  refunds?: Refund[];
+  credits?: Credit[];
+  voids?: Void[];
+  preAuths?: Authorization[];
+  authorizations?: Authorization[];
+  device?: IdRef;
+  printGroups?: PrintGroup[];
+  orderFulfillmentEvent?: OrderFulfillmentEvent;
+  merchant?: IdRef;
+  href?: string;
+};
+
+export const OrderSchema: z.ZodType<Order> = z.looseObject({
   // === Identificación ===
   id: z.string().optional(),
 
@@ -320,16 +365,16 @@ export const OrderSchema = z.looseObject({
   lineItems: ExpandedResponseSchema(LineItemSchema).optional(),
 
   // === Pagos ===
-  payments: z.array(PaymentSchema).optional(),
+  payments: z.lazy(() => ExpandedResponseSchema(PaymentSchema)).optional(),
 
   // === Reembolsos ===
   refunds: ExpandedResponseSchema(RefundSchema).optional(),
 
   // === Créditos ===
-  credits: z.array(CreditSchema).optional(),
+  credits: ExpandedResponseSchema(CreditSchema).optional(),
 
   // === Voids ===
-  voids: z.array(VoidSchema).optional(),
+  voids: ExpandedResponseSchema(VoidSchema).optional(),
 
   // === Pre-authorizations ===
   preAuths: z.array(AuthorizationSchema).optional(),
@@ -366,7 +411,6 @@ export type Authorization = z.infer<typeof AuthorizationSchema>;
 export type PrintGroup = z.infer<typeof PrintGroupSchema>;
 export type OrderFulfillmentEvent = z.infer<typeof OrderFulfillmentEventSchema>;
 export type OrderAdditionalCharge = z.infer<typeof OrderAdditionalChargeSchema>;
-export type Order = z.infer<typeof OrderSchema>;
 
 // ============================================================================
 // WRAPPERS PARA RESPUESTAS DE API

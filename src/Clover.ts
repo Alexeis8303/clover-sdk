@@ -6,6 +6,7 @@ import { ModifierGroupsResource } from "./resources/ModifierGroupsResource.js"
 import { ModifiersResource } from "./resources/ModifiersResource.js"
 import { MerchantsResource } from "./resources/MerchantResource.js"
 import { HostedCheckoutResource } from "./resources/HostedCheckoutResource.js"
+import { PaymentsResource } from "./resources/PaymentsResource.js"
 
 export interface CloverOptions {
   merchantId: string
@@ -26,6 +27,7 @@ export class Clover {
   public modifiers: ModifiersResource;
   public merchants: MerchantsResource;
   public hostedCheckout: HostedCheckoutResource;
+  public payments: PaymentsResource;
 
   constructor(options: CloverOptions) {
 
@@ -49,5 +51,6 @@ export class Clover {
     this.modifiers = new ModifiersResource(requestSender)
     this.merchants = new MerchantsResource(requestSender)
     this.hostedCheckout = new HostedCheckoutResource(requestSender);
+    this.payments = new PaymentsResource(requestSender);
   }
 }
