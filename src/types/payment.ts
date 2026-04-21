@@ -6,7 +6,6 @@ import {
   TimestampSchema,
   GenericExtraSchema,
   GenericAttributesSchema,
-  PercentageDecimalSchema,
   LocaleSchema
 } from "./base.js";
 import {
@@ -32,18 +31,37 @@ import {
   TransactionResultEnum,
   ReversalReasonEnum
 } from "./enums.js";
-import { CustomerSchema, VaultedCardSchema } from "./customer.js";
+import { VaultedCardSchema } from "./customer.js";
 import { RefundSchema } from "./refund.js";
+
+// ============================================================================
+// DEBIT REFUND
+// ============================================================================
+
+export const DebitRefundSchema = z.looseObject({
+  debitTransactionRouteInd: z.string().optional(),
+  isDebitTransactionRefundable: z.boolean().optional(),
+});
 
 // ============================================================================
 // CARD TRANSACTION COMPONENTS
 // ============================================================================
+export const IdentityDocumentSchema = z.looseObject({
+  id: z.string().optional(),
+  type: z.string().optional(),
+  number: z.string().optional(),
+  createdTime: TimestampSchema.optional(),
+  modifiedTime: TimestampSchema.optional(),
+  deletedTime: TimestampSchema.optional(),
+  payment: IdRefSchema.optional(),
+});
+
 
 export const PromotionalMessageSchema = z.looseObject({
-  message: z.string(),
-  showOnMerchantReceipt: z.boolean(),
-  showOnCustomerReceipt: z.boolean(),
-  showOnDisplay: z.boolean()
+  message: z.string().optional(),
+  showOnMerchantReceipt: z.boolean().optional(),
+  showOnCustomerReceipt: z.boolean().optional(),
+  showOnDisplay: z.boolean().optional(),
 });
 
 export const SepaElvTransactionInfoSchema = z.looseObject({
@@ -54,57 +72,51 @@ export const SepaElvTransactionInfoSchema = z.looseObject({
   creditorId: z.string().optional(),
   mandateId: z.string().optional(),
   iban: z.string().optional(),
-  isMerchantForced: z.boolean().optional()
+  isMerchantForced: z.boolean().optional(),
 });
 
 export const PrintMessageSchema = z.looseObject({
   destination: PrintMessageDestinationEnum.optional(),
-  content: z.string().optional()
+  content: z.string().optional(),
 });
 
 
 export const CardTransactionSchema = z.looseObject({
-  cardType: CardTypeEnum,
-  entryType: CardEntryTypeEnum,
+  cardType: CardTypeEnum.optional(),
+  entryType: CardEntryTypeEnum.optional(),
   first6: z.string().length(6).optional(),
   last4: z.string().length(4).optional(),
-  type: CardTransactionTypeEnum,
+  type: CardTransactionTypeEnum.optional(),
   authCode: z.string().optional(),
   referenceId: z.string().optional(),
   transactionNo: z.string().optional(),
   state: CardTransactionStateEnum.optional(),
-  extra: GenericExtraSchema,
-  begBalance: AmountSchema,
-  endBalance: AmountSchema,
+  extra: GenericExtraSchema.optional(),
+  begBalance: AmountSchema.optional(),
+  endBalance: AmountSchema.optional(),
   avsResult: AvsResultEnum.optional(),
   cardholderName: z.string().optional(),
   token: z.string().optional(),
   vaultedCard: VaultedCardSchema.optional(),
   gatewayTxState: GatewayTxStateEnum.optional(),
   currency: z.string().length(3).optional(),
-  captured: z.boolean().optional()
+  captured: z.boolean().optional(),
+  debitRefund: DebitRefundSchema.optional(),
 });
 
 export const TransactionInfoSchema = z.looseObject({
   languageIndicator: z.string().length(2).optional(),
   transactionLocale: LocaleSchema.optional(),
   accountSelection: AccountSelectionEnum.optional(),
-  fiscalInvoiceNumber: z.string().regex(/^\d{12}$/).optional(),
-  installmentsQuantity: z.number().int().min(1).max(999).optional(),
+  fiscalInvoiceNumber: z.string().optional(),
+  installmentsQuantity: z.number().int().optional(),
   installmentsPlanCode: z.string().optional(),
   installmentsPlanId: z.string().optional(),
   installmentsPlanDesc: z.string().optional(),
   cardTypeLabel: z.string().optional(),
   cardSymbol: z.string().optional(),
   stan: z.number().int().optional(),
-  identityDocument: z.looseObject({
-    id: z.string(),
-    type: z.string(),
-    number: z.string(),
-    createdTime: TimestampSchema.optional(),
-    modifiedTime: TimestampSchema.optional(),
-    deletedTime: TimestampSchema.optional()
-  }).optional(),
+  identityDocument: IdentityDocumentSchema.optional(),
   batchNumber: z.string().optional(),
   receiptNumber: z.string().optional(),
   reversalStanRefNum: z.string().optional(),
@@ -129,13 +141,14 @@ export const TransactionInfoSchema = z.looseObject({
   origTransactionSequenceCounter: z.string().optional(),
   transactionSequenceCounterUpdate: z.string().optional(),
   emergencyFlag: z.boolean().optional(),
+  entryType: CardEntryTypeEnum.optional(),
   promotionalMessage: PromotionalMessageSchema.optional(),
   sepaElvTransactionInfo: SepaElvTransactionInfoSchema.optional(),
   clientCardType: CardTypeEnum.optional(),
   explicitlySelectedApp: z.string().optional(),
   isSepaElv: z.boolean().optional(),
   cardEntryType: CardEntryTypeEnum.optional(),
-  printMessages: z.array(PrintMessageSchema).optional()
+  printMessages: z.array(PrintMessageSchema).optional(),
 });
 
 
@@ -150,7 +163,7 @@ export const EmiDetailsSchema = z.looseObject({
   discountAmount: z.string().optional(),
   offerCashback: z.string().optional(),
   tranAmount: z.string().optional(),
-  totalPayable: z.string().optional()
+  totalPayable: z.string().optional(),
 });
 
 export const OceanGatewayInfoSchema = z.looseObject({
@@ -181,7 +194,7 @@ export const OceanGatewayInfoSchema = z.looseObject({
   customerRemarks: z.string().optional(),
   bankName: z.string().optional(),
   bankCode: z.string().optional(),
-  emiDetails: EmiDetailsSchema.optional()
+  emiDetails: EmiDetailsSchema.optional(),
 });
 
 export const GermanInfoSchema = z.looseObject({
@@ -211,7 +224,7 @@ export const GermanInfoSchema = z.looseObject({
   sepaElvMandate: z.string().optional(),
   sepaElvCreditorId: z.string().optional(),
   sepaElvMandateId: z.string().optional(),
-  sepaElvIban: z.string().optional()
+  sepaElvIban: z.string().optional(),
 });
 
 export const AppTrackingSchema = z.looseObject({
@@ -220,7 +233,7 @@ export const AppTrackingSchema = z.looseObject({
   applicationID: z.string().optional(),
   applicationVersion: z.string().optional(),
   sourceSDK: z.string().optional(),
-  sourceSDKVersion: z.string().optional()
+  sourceSDKVersion: z.string().optional(),
 });
 
 // ============================================================================
@@ -228,57 +241,58 @@ export const AppTrackingSchema = z.looseObject({
 // ============================================================================
 
 export const TipSuggestionSchema = z.looseObject({
-  id: z.string(),
-  name: z.string(),
+  id: z.string().optional(),
+  name: z.string().optional(),
   percentage: z.number().int().optional(),
-  amount: AmountSchema,
+  amount: AmountSchema.optional(),
   isEnabled: z.boolean().optional(),
-  flatTip: AmountSchema
+  flatTip: AmountSchema.optional(),
 });
 
 export const CashbackSuggestionSchema = z.looseObject({
-  amount: AmountSchema
+  amount: AmountSchema.optional(),
 });
 
 export const RegionalExtrasSchema = z.looseObject({
   default: z.string().optional(),
-  disableCreditSurcharge: z.boolean().default(false)
+  disableCreditSurcharge: z.boolean().optional(),
 });
 
 export const ReceiptOptionsSchema = z.looseObject({
   default: z.string().optional(),
-  remoteReceipts: z.boolean().optional()
+  remoteReceipts: z.boolean().optional(),
 });
 
 export const TransactionSettingsSchema = z.looseObject({
   cardEntryMethods: z.number().int().optional(),
-  disableCashBack: z.boolean().default(false),
-  cloverShouldHandleReceipts: z.boolean().default(true),
-  forcePinEntryOnSwipe: z.boolean().default(false),
-  disableRestartTransactionOnFailure: z.boolean().default(false),
-  allowOfflinePayment: z.boolean().default(false),
-  approveOfflinePaymentWithoutPrompt: z.boolean().default(false),
-  forceOfflinePayment: z.boolean().default(false),
-  signatureThreshold: AmountSchema,
+  disableCashBack: z.boolean().optional(),
+  cloverShouldHandleReceipts: z.boolean().optional(),
+  forcePinEntryOnSwipe: z.boolean().optional(),
+  disableRestartTransactionOnFailure: z.boolean().optional(),
+  allowOfflinePayment: z.boolean().optional(),
+  approveOfflinePaymentWithoutPrompt: z.boolean().optional(),
+  forceOfflinePayment: z.boolean().optional(),
+  signatureThreshold: AmountSchema.optional(),
   signatureEntryLocation: SignatureEntryLocationEnum.optional(),
   tipMode: TipModeEnum.optional(),
-  tippableAmount: AmountSchema,
-  disableReceiptSelection: z.boolean().default(false),
-  disableDuplicateCheck: z.boolean().default(false),
-  autoAcceptPaymentConfirmations: z.boolean().default(false),
-  autoAcceptSignature: z.boolean().default(false),
-  returnResultOnTransactionComplete: z.boolean().default(false),
+  tippableAmount: AmountSchema.optional(),
+  disableReceiptSelection: z.boolean().optional(),
+  disableDuplicateCheck: z.boolean().optional(),
+  autoAcceptPaymentConfirmations: z.boolean().optional(),
+  autoAcceptSignature: z.boolean().optional(),
+  returnResultOnTransactionComplete: z.boolean().optional(),
   tipSuggestions: z.array(TipSuggestionSchema).optional(),
   cashbackSuggestions: z.array(CashbackSuggestionSchema).optional(),
   regionalExtras: RegionalExtrasSchema.optional(),
-  receiptOptions: ReceiptOptionsSchema.optional()
+  disableCreditSurcharge: z.boolean().optional(),
+  receiptOptions: ReceiptOptionsSchema.optional(),
 });
 
 export const DccInfoSchema = z.looseObject({
   inquiryRateId: z.number().int().optional(),
   dccApplied: z.boolean().optional(),
   foreignCurrencyCode: z.string().optional(),
-  foreignAmount: AmountSchema,
+  foreignAmount: AmountSchema.optional(),
   exchangeRate: z.number().optional(),
   marginRatePercentage: z.string().optional(),
   exchangeRateSourceName: z.string().optional(),
@@ -286,13 +300,15 @@ export const DccInfoSchema = z.looseObject({
   dccEligible: z.boolean().optional(),
   exchangeRateId: z.string().optional(),
   rateRequestId: z.string().optional(),
-  baseAmount: AmountSchema,
-  baseCurrencyCode: z.string().optional()
+  baseAmount: AmountSchema.optional(),
+  baseCurrencyCode: z.string().optional(),
 });
 
 export const SignatureDisclaimerSchema = z.looseObject({
   disclaimerText: z.string().optional(),
-  disclaimerValues: z.looseObject({ default: z.string().optional() }).optional()
+  disclaimerValues: z.looseObject({
+    default: z.string().optional(),
+  }).optional(),
 });
 
 export const CashAdvanceCustomerIdentificationSchema = z.looseObject({
@@ -300,7 +316,7 @@ export const CashAdvanceCustomerIdentificationSchema = z.looseObject({
   serialNumber: z.string().optional(),
   maskedSerialNumber: z.string().optional(),
   encryptedSerialNumber: z.string().optional(),
-  expirationDate: z.string().regex(/^\d{8}$/).optional(),
+  expirationDate: z.string().optional(),
   issuingState: z.string().optional(),
   issuingCountry: z.string().optional(),
   customerName: z.string().optional(),
@@ -310,12 +326,12 @@ export const CashAdvanceCustomerIdentificationSchema = z.looseObject({
   addressState: z.string().optional(),
   addressZipCode: z.string().optional(),
   addressCountry: z.string().optional(),
-  tellerID: z.number().int().optional()
+  tellerID: z.number().int().optional(),
 });
 
 export const CashAdvanceExtraSchema = z.looseObject({
   cashAdvanceSerialNum: z.string().optional(),
-  cashAdvanceCustomerIdentification: CashAdvanceCustomerIdentificationSchema.optional()
+  cashAdvanceCustomerIdentification: CashAdvanceCustomerIdentificationSchema.optional(),
 });
 
 // ============================================================================
@@ -323,36 +339,36 @@ export const CashAdvanceExtraSchema = z.looseObject({
 // ============================================================================
 
 export const PurchaseCardL2Schema = z.looseObject({
-  taxAmount: AmountSchema,
+  taxAmount: AmountSchema.optional(),
   taxIndicator: TaxIndicatorEnum.optional(),
-  vatTaxAmount: AmountSchema,
+  vatTaxAmount: AmountSchema.optional(),
   vatTaxRate: z.number().int().optional(),
   purchaseIdentifier: z.string().optional(),
   pcOrderNumber: z.string().optional(),
-  discountAmount: AmountSchema,
-  freightAmount: AmountSchema,
-  dutyAmount: AmountSchema,
+  discountAmount: AmountSchema.optional(),
+  freightAmount: AmountSchema.optional(),
+  dutyAmount: AmountSchema.optional(),
   destinationPostalCode: z.string().optional(),
   shipFromPostalCode: z.string().optional(),
   destinationCountryCode: z.string().optional(),
   merchantTaxId: z.string().optional(),
-  productDescription: z.string().optional()
+  productDescription: z.string().optional(),
 });
 
 export const PurchaseCardL3LineItemSchema = z.looseObject({
-  itemDescription: z.string().max(26).optional(),
+  itemDescription: z.string().optional(),
   productCode: z.string().optional(),
-  unitCost: AmountSchema,
+  unitCost: AmountSchema.optional(),
   quantity: z.number().int().optional(),
-  discountAmount: AmountSchema,
+  discountAmount: AmountSchema.optional(),
   unitOfMeasure: z.string().optional(),
-  commodityCode: z.string().optional()
+  commodityCode: z.string().optional(),
 });
 
 export const PurchaseCardL3Schema = z.looseObject({
   serviceCode: z.string().optional(),
   magneticStripeInd: z.boolean().optional(),
-  level3LineItems: z.array(PurchaseCardL3LineItemSchema).optional()
+  level3LineItems: z.array(PurchaseCardL3LineItemSchema).optional(),
 });
 
 // ============================================================================
@@ -366,7 +382,7 @@ export const TerminalStandardSchema = z.looseObject({
   issuer: z.string().optional(),
   type: z.string().optional(),
   assigner: z.string().optional(),
-  assessmentIdentifier: z.string().optional()
+  assessmentIdentifier: z.string().optional(),
 });
 
 export const TerminalManagementComponentSchema = z.looseObject({
@@ -376,21 +392,21 @@ export const TerminalManagementComponentSchema = z.looseObject({
   serial: z.string().optional(),
   version: z.string().optional(),
   identification: z.string().optional(),
-  standard: TerminalStandardSchema.optional()
+  standard: TerminalStandardSchema.optional(),
 });
 
 export const EmiInfoSchema = z.looseObject({
   mobileNumber: z.string().optional(),
   indicator: z.string().optional(),
-  transactionAmount: AmountSchema,
-  productAmount: AmountSchema,
-  discountAmount: AmountSchema,
+  transactionAmount: AmountSchema.optional(),
+  productAmount: AmountSchema.optional(),
+  discountAmount: AmountSchema.optional(),
   tenure: z.number().int().optional(),
   interestRate: z.number().optional(),
-  interestAmount: AmountSchema,
-  processingFee: AmountSchema,
-  totalAmount: AmountSchema,
-  amountPerMonth: AmountSchema
+  interestAmount: AmountSchema.optional(),
+  processingFee: AmountSchema.optional(),
+  totalAmount: AmountSchema.optional(),
+  amountPerMonth: AmountSchema.optional(),
 });
 
 // ============================================================================
@@ -402,7 +418,7 @@ export const VoidReasonDetailsSchema = z.looseObject({
   voidReasonCode: VoidReasonCodeEnum.optional(),
   description: z.string().optional(),
   descriptionEnum: z.string().optional(),
-  payFailureMessage: z.string().optional()
+  payFailureMessage: z.string().optional(),
 });
 
 // ============================================================================
@@ -413,7 +429,7 @@ export const LineItemPaymentSchema = z.looseObject({
   id: z.string().optional(),
   percentage: z.number().int().optional(),
   binName: z.string().optional(),
-  refunded: z.boolean().optional()
+  refunded: z.boolean().optional(),
 });
 
 // ============================================================================
@@ -428,13 +444,7 @@ export const IncrementSchema = z.looseObject({
   createdTime: TimestampSchema.optional(),
   employee: IdRefSchema.optional(),
   incrementAmount: AmountSchema.optional(),
-  purchaseCardL2: PurchaseCardL2Schema.optional(),
-  purchaseCardL3: PurchaseCardL3Schema.optional(),
-  oceanGatewayInfo: OceanGatewayInfoSchema.optional(),
-  terminalManagementComponents: z.array(TerminalManagementComponentSchema).optional(),
-  emiInfo: EmiInfoSchema.optional()
 });
-
 // ============================================================================
 // CLOSING PAYMENT (Para authorizations)
 // ============================================================================
@@ -443,14 +453,6 @@ export const ClosingPaymentSchema = z.looseObject({
   id: z.string().optional()
 });
 
-// ============================================================================
-// DEBIT REFUND
-// ============================================================================
-
-export const DebitRefundSchema = z.looseObject({
-  debitTransactionRouteInd: z.string().optional(),
-  isDebitTransactionRefundable: z.boolean().optional()
-});
 
 // ============================================================================
 // SERVICE CHARGE (Para payments)
@@ -459,7 +461,7 @@ export const DebitRefundSchema = z.looseObject({
 export const PaymentServiceChargeSchema = z.looseObject({
   id: z.string().optional(),
   name: z.string().optional(),
-  amount: AmountSchema.optional()
+  amount: AmountSchema.optional(),
 });
 
 // ============================================================================
@@ -471,7 +473,7 @@ export const PaymentAdditionalChargeSchema = z.looseObject({
   amount: AmountSchema.optional(),
   rate: z.number().int().optional(),
   type: AdditionalChargeTypeEnum.optional(),
-  attributes: GenericAttributesSchema.optional()
+  attributes: GenericAttributesSchema.optional(),
 });
 
 // ============================================================================
@@ -486,7 +488,6 @@ export const PaymentTaxRateSchema = z.looseObject({
   taxableAmount: AmountSchema.optional(),
   isVat: z.boolean().optional(),
   taxAmount: AmountSchema.optional(),
-  transactionRef: IdRefSchema.optional()
 });
 
 // ============================================================================
@@ -502,7 +503,7 @@ export const TenderSchema = z.looseObject({
   supportsTipping: z.boolean().optional(),
   enabled: z.boolean().optional(),
   visible: z.boolean().optional(),
-  instructions: z.string().optional()
+  instructions: z.string().optional(),
 });
 
 // ============================================================================
@@ -511,18 +512,20 @@ export const TenderSchema = z.looseObject({
 
 
 export const PaymentSchema = z.looseObject({
-   // === Identificación ===
-  id: z.string(),
+  // === Identificación ===
+  id: z.string().optional(),
 
   // === Referencias ===
   order: IdRefSchema.optional(),
   device: IdRefSchema.optional(),
-  tender: IdRefSchema.optional(),
   employee: IdRefSchema.optional(),
-  merchant: IdRefSchema,
+  merchant: IdRefSchema.optional(),
+
+  // === Tender ===
+  tender: TenderSchema.optional(),
 
   // === Montos ===
-  amount: AmountSchema,
+  amount: AmountSchema.optional(),
   tipAmount: AmountSchema.optional(),
   taxAmount: AmountSchema.optional(),
   cashbackAmount: AmountSchema.optional(),
@@ -531,7 +534,7 @@ export const PaymentSchema = z.looseObject({
   // === Identificadores externos ===
   externalPaymentId: z.string().optional(),
   externalReferenceId: z.string().optional(),
- 
+
   // === Timestamps ===
   createdTime: TimestampSchema.optional(),
   clientCreatedTime: TimestampSchema.optional(),
@@ -539,12 +542,11 @@ export const PaymentSchema = z.looseObject({
   modifiedTime: TimestampSchema.optional(),
 
   // === Estado ===
-  offline: z.boolean().default(false),
+  offline: z.boolean().optional(),
   result: PaymentResultEnum.optional(),
 
   // === Transacción de tarjeta ===
   cardTransaction: CardTransactionSchema.optional(),
-  debitRefund: DebitRefundSchema.optional().optional(),
 
   // === Cargos adicionales ===
   serviceCharge: PaymentServiceChargeSchema.optional(),
@@ -553,17 +555,20 @@ export const PaymentSchema = z.looseObject({
   // === Impuestos ===
   taxRates: z.array(PaymentTaxRateSchema).optional(),
 
-  // === Reembolsos (referencia circular con lazy) ===
-  refunds: z.array(z.lazy(() => RefundSchema)).optional(),
+  // === Reembolsos ===
+  refunds: z.array(RefundSchema).optional(),
+
+  // === Nota ===
+  note: z.string().optional(),
+
+  // === Line Item Payments ===
+  lineItemPayments: z.array(LineItemPaymentSchema).optional(),
 
   // === Autorizaciones y voids ===
   authorization: IdRefSchema.optional(),
   voidPaymentRef: IdRefSchema.optional(),
   voidReason: VoidReasonEnum.optional(),
   voidReasonDetails: VoidReasonDetailsSchema.optional(),
-
-  // === Mensajes de fallo ===
-  payFailureMessage: z.string().optional(),
 
   // === Conversión de moneda ===
   dccInfo: DccInfoSchema.optional(),
@@ -580,41 +585,25 @@ export const PaymentSchema = z.looseObject({
 
   // === Cash Advance ===
   cashAdvanceExtra: CashAdvanceExtraSchema.optional(),
-  
+
   // === Información de transacción ===
   transactionInfo: TransactionInfoSchema.optional(),
-  
+
   // === Disclaimer de firma ===
   signatureDisclaimer: SignatureDisclaimerSchema.optional(),
-  
 
-  // === Incrementos (authorizations incrementales) ===
+  // === Incrementos ===
   increments: z.array(IncrementSchema).optional(),
-  
+
   // === Purchase Card ===
   purchaseCardL2: PurchaseCardL2Schema.optional(),
   purchaseCardL3: PurchaseCardL3Schema.optional(),
-  
+
   // === Terminal Management ===
   terminalManagementComponents: z.array(TerminalManagementComponentSchema).optional(),
-  
+
   // === EMI Info ===
   emiInfo: EmiInfoSchema.optional(),
-
-  // === Line Item Payments ===
-  lineItemPayments: z.array(LineItemPaymentSchema).optional(),
-  
-  // === Closing Payment (para authorizations) ===
-  closingPayment: ClosingPaymentSchema.optional(),
-  
-  // === Tab Name (para authorizations) ===
-  tabName: z.string().optional(),
-  
-  // === Auth Code (lowercase según JSON) ===
-  authcode: z.string().optional(),
-  
-  // === Note ===
-  note: z.string().optional()
 });
 
 // ============================================================================

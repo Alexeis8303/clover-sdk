@@ -93,12 +93,12 @@ console.log(JSON.stringify(item, null, 2));*/
 /*const items = await clover.items.listFiltering({id: ["4MBM909YE3N74", "J9XBMBR9M8Q4M"]}, 0, 100, ["modifierGroups", "categories", "tags", "taxRates", "categories.items", "modifierGroups.modifiers"]);
 console.log(JSON.stringify(items, null, 2));*/
 
-for await (const item of clover.items.listAutoPagingFiltering({id: ["4MBM909YE3N74", "J9XBMBR9M8Q4M"]}, 100, ["modifierGroups", "categories", "tags", "taxRates", "categories.items", "modifierGroups.modifiers"])) {
+/*for await (const item of clover.items.listAutoPagingFiltering({id: ["4MBM909YE3N74", "J9XBMBR9M8Q4M"]}, 100, ["modifierGroups", "categories", "tags", "taxRates", "categories.items", "modifierGroups.modifiers"])) {
   console.log(JSON.stringify(item, null, 2));   
-}
+}*/
 
 
-/*const items = await clover.items.list(0, 100, ["modifierGroups", "categories"]);
+const items = await clover.items.list(0, 100, ["modifierGroups", "categories"]);
 const selectedItems = pickRandomItems(items.elements, 3);
 const orderInput: AtomicOrderCreateInput = {
   orderCart: {
@@ -149,4 +149,4 @@ checkoutInput.customer ={
 console.log("-------------------Checkout Input:-------------------");
 console.log(JSON.stringify(checkoutInput, null, 2));
 const link = await clover.hostedCheckout.create(checkoutInput);
-console.log(JSON.stringify(link, null, 2));*/
+console.log(JSON.stringify(link, null, 2));
