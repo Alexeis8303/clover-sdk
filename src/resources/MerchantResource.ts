@@ -1,5 +1,6 @@
 import { ApiResource } from "../core/ApiResource.js"
 import { Employee, EmployeeListResponseSchema, EmployeeSchema } from "../types/employee.js"
+import { TaxRate, TaxRateListResponseSchema, TaxRateSchema } from "../types/lineitem.js"
 import { Merchant, MerchantSchema } from "../types/merchant.js"
 import { OrderType, OrderTypeListResponseSchema, OrderTypeSchema } from "../types/order-type.js"
 import { Role, RoleListResponseSchema, RoleSchema } from "../types/roles.js"
@@ -147,6 +148,77 @@ export class MerchantsResource extends ApiResource {
     )
 
     return RoleSchema.parse(data)
+  }
+
+  // ============================================================
+  // Tax Rates
+  // ============================================================
+
+  async listTaxRates(offset: number = 0, limit: number = 100, expand: string[] = []): Promise<{ elements: TaxRate[] }> {
+    const data = await this.get(`/tax_rates?offset=${offset}&limit=${limit}${expand.length > 0 ? `&expand=${expand.join(",")}` : ""}`);
+    const parsed = TaxRateListResponseSchema.parse(data);
+    return { elements: parsed.elements ?? [] };
+  }
+
+  async listTaxRatesFiltering(
+          filter: Record<string, string[]> = {},
+          offset: number = 0,
+          limit: number = 100,
+          expand: string[] = []
+      ): Promise<{ elements: TaxRate[] }> {
+  
+  
+  
+          const url = `/tax_rates?${this.buildUrl(filter,offset, limit, expand)}`;
+          const data = await this.get(url);
+          const parsed = TaxRateListResponseSchema.parse(data);
+  
+          return {
+              elements: parsed.elements ?? []
+          };
+      }
+
+  async *listTaxRatesAutoPaging(limit: number = 100, expand: string[] = []): AsyncGenerator<TaxRate> {
+
+    yield* autoPaginate<TaxRate>(
+      async (offset, limit) => {
+
+        const data = await this.get(
+          `/tax_rates?offset=${offset}&limit=${limit}${expand.length > 0 ? `&expand=${expand.join(",")}` : ""
+          }`
+        )
+
+        const parsed = TaxRateListResponseSchema.parse(data)
+
+        return {
+          elements: parsed.elements ?? []
+        }
+      },
+      limit
+    )
+  }
+
+  async *listTaxRatesAutoPagingFiltering(filter: Record<string, string[]> = {},limit: number = 100, expand: string[] = []): AsyncGenerator<TaxRate> {
+  
+          yield* autoPaginate<TaxRate>(
+              async (offset, limit) => {
+  
+                  const url = `/tax_rates?${this.buildUrl(filter,offset, limit, expand)}`;
+  
+                  const data = await this.get(url)
+  
+                  const parsed = TaxRateListResponseSchema.parse(data)
+                  return {
+                      elements: parsed.elements ?? []
+                  };
+              },
+              limit
+          )
+      }
+
+  async retrieveTaxRate(taxRateId: string, expand: string[] = []): Promise<TaxRate> {
+    const data = await this.get(`/tax_rates/${taxRateId}${expand.length > 0 ? `?expand=${expand.join(",")}` : ""}`);
+    return TaxRateSchema.parse(data);
   }
 
 

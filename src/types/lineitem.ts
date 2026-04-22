@@ -239,6 +239,11 @@ export const LineItemListResponseSchema = z.object({
   href: z.string().optional()
 });
 
+export const TaxRateListResponseSchema = z.object({
+  elements: z.array(TaxRateSchema).optional(),
+  href: z.string().optional(),
+});
+
 // ============================================================================
 // TYPE EXPORTS (ALL)
 // ============================================================================
@@ -255,5 +260,6 @@ export type Tag = z.infer<typeof TagSchema>;
 export type ExchangedLineItem = z.infer<typeof ExchangedLineItemSchema>;
 export type PrintGroup = z.infer<typeof PrintGroupSchema>;
 export type TaxRate = z.infer<typeof TaxRateSchema>;
+export type TaxRateListResponse = z.infer<typeof TaxRateListResponseSchema>;
 export type LineItemPayment = z.infer<typeof LineItemPaymentSchema>;
 export type LineItemListResponse = z.infer<typeof LineItemListResponseSchema>;
